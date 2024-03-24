@@ -6,6 +6,7 @@ import {
   GoogleAuthProvider,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  signOut,
 } from "firebase/auth";
 
 import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
@@ -79,7 +80,7 @@ export const createAuthUserWithEmailAndPassword = async (
   try {
     const user = await createUserWithEmailAndPassword(auth, email, password);
     await createUserDocumentFromAuth(user.user, { displayName });
-    return true;
+    return { status: true, user: user.user };
   } catch (error: any) {
     if (error.code === "auth/email-already-in-use") {
       alert("Email already in use");
@@ -96,8 +97,11 @@ export const signInAuthUserWithEmailAndPassword = async (
   password: string
 ) => {
   try {
-    await signInWithEmailAndPassword(auth, email, password);
-    return true;
+    const { user } = await signInWithEmailAndPassword(auth, email, password);
+    return {
+      status: true,
+      user,
+    };
   } catch (error: any) {
     if (error.code === "auth/invalid-credential") {
       alert("Invalid credentials");
@@ -105,5 +109,15 @@ export const signInAuthUserWithEmailAndPassword = async (
       console.error("Error signing in user", error.code, error.message);
     }
     return false;
+  }
+};
+
+// SIGN OUT USER
+
+export const signOutUser = async () => {
+  try {
+    return await signOut(auth);
+  } catch (error: any) {
+    console.error("Error signing out user", error.message);
   }
 };
