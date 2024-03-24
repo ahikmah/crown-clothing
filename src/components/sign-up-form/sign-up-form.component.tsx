@@ -1,6 +1,4 @@
-import { useContext, useState } from "react";
-
-import { UserContext } from "../../contexts/user.context";
+import { useState } from "react";
 
 import FormInput from "../form-input/form-input.component";
 import { createAuthUserWithEmailAndPassword } from "../../utils/firebase/firebase.utils";
@@ -21,7 +19,6 @@ const defaultFormFields = {
 
 const SignUpForm = () => {
   const [formFields, setFormFields] = useState(defaultFormFields);
-  const { setCurrentUser } = useContext(UserContext);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -37,7 +34,6 @@ const SignUpForm = () => {
       formFields.displayName
     );
     if (typeof result === "object" && result.status) {
-      setCurrentUser(result.user);
       setFormFields(defaultFormFields);
     }
   };

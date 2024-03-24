@@ -7,6 +7,7 @@ import {
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
   signOut,
+  onAuthStateChanged,
 } from "firebase/auth";
 
 import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
@@ -44,7 +45,7 @@ const db = getFirestore();
 
 export const createUserDocumentFromAuth = async (
   userAuth: any,
-  additionalInformation: any
+  additionalInformation?: any
 ) => {
   if (!userAuth) return;
 
@@ -120,4 +121,9 @@ export const signOutUser = async () => {
   } catch (error: any) {
     console.error("Error signing out user", error.message);
   }
+};
+
+// CHECK USER AUTHENTICATION
+export const checkUserAuthentication = (callback: any) => {
+  return onAuthStateChanged(auth, callback);
 };
