@@ -5,6 +5,7 @@ import {
   signInWithPopup,
   GoogleAuthProvider,
   createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
 } from "firebase/auth";
 
 import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
@@ -30,6 +31,7 @@ export const auth = getAuth();
 
 export const signInWithGooglePopup = () =>
   signInWithPopup(auth, googleProvider);
+
 export const signInWithGoogleRedirect = () =>
   signInWithRedirect(auth, googleProvider);
 
@@ -83,6 +85,24 @@ export const createAuthUserWithEmailAndPassword = async (
       alert("Email already in use");
     } else {
       console.error("Error creating user", error.message);
+    }
+    return false;
+  }
+};
+
+// SIGN IN USER
+export const signInAuthUserWithEmailAndPassword = async (
+  email: string,
+  password: string
+) => {
+  try {
+    await signInWithEmailAndPassword(auth, email, password);
+    return true;
+  } catch (error: any) {
+    if (error.code === "auth/invalid-credential") {
+      alert("Invalid credentials");
+    } else {
+      console.error("Error signing in user", error.code, error.message);
     }
     return false;
   }
