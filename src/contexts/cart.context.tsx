@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { createContext, useState, useEffect } from "react";
-import { IProduct } from "../types/product";
+import { IItems } from "../types/product";
 import { ICart } from "../types/cart";
 
 // --------------------------------------------------------
@@ -9,9 +9,9 @@ export const CartContext = createContext({
   isCartOpen: false,
   setIsCartOpen: (_: any) => {},
   cartItems: [] as ICart[],
-  addItemToCart: (_: IProduct) => {},
-  removeItemFromCart: (_: IProduct) => {},
-  deleteItemFromCart: (_: IProduct) => {},
+  addItemToCart: (_: IItems) => {},
+  removeItemFromCart: (_: IItems) => {},
+  deleteItemFromCart: (_: IItems) => {},
   cartCount: 0,
   cartTotal: 0,
 });
@@ -35,7 +35,7 @@ export const CartProvider = ({ children }: any) => {
     setCartTotal(newCartTotal);
   }, [cartItems]);
 
-  const addItemToCart = (product: IProduct) => {
+  const addItemToCart = (product: IItems) => {
     const existingCartItem = cartItems.find((item) => item.id === product.id);
 
     if (existingCartItem) {
@@ -51,7 +51,7 @@ export const CartProvider = ({ children }: any) => {
     }
   };
 
-  const removeItemFromCart = (product: IProduct) => {
+  const removeItemFromCart = (product: IItems) => {
     const existingCartItem = cartItems.find((item) => item.id === product.id);
 
     if (existingCartItem?.quantity === 1) {
@@ -67,7 +67,7 @@ export const CartProvider = ({ children }: any) => {
     }
   };
 
-  const deleteItemFromCart = (product: IProduct) => {
+  const deleteItemFromCart = (product: IItems) => {
     setCartItems(cartItems.filter((item) => item.id !== product.id));
   };
 
